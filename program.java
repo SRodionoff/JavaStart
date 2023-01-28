@@ -1,65 +1,34 @@
-// Задача 1
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.logging.*;
 
-// public class program {
-// public static void main(String[] args) {
-// int[] arr = new int[20];
-// int max = 0;
-// int min = 300;
-// for (int i = 0; i < arr.length; i++) {
-// arr[i] = ((int) (Math.random() * 300));
-// System.out.println(arr[i]);
-// max = Math.max(max, arr[i]);
-// min = Math.min(min, arr[i]);
-// }
-// System.out.println("Это максимум: " + max + ", а это минимум: " + min);
-// }
-// }
+public class program {
+   public static void main(String[] args) throws IOException {
+      try {
+         Scanner scn = new Scanner(System.in);
+         System.out.print("Введите число: ");
+         Byte res = scn.nextByte();
+         String resStr = Byte.toString(res);
+         try (FileWriter fw = new FileWriter("result.txt", true)) {
+            fw.write(resStr + "\n");
+            fw.flush();
+            scn.close();
+         } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+         }
+      } catch (Exception ex) {
+         sLog(ex.toString());
+      }
+   }
 
-// Задача 2
-
-// import java.util.Arrays;
-// public class program {
-// public static void main(String[] args) {
-// int[] arr = { 65, 17, 25, 41, 31 };
-// boolean isSorted = false;
-// int buf;
-// while (!isSorted) {
-// isSorted = true;
-// for (int i = 0; i < arr.length - 1; i++) {
-// if (arr[i] > arr[i + 1]) {
-// isSorted = false;
-// buf = arr[i];
-// arr[i] = arr[i + 1];
-// arr[i + 1] = buf;
-// }
-// }
-// }
-// System.out.println(Arrays.toString(arr));
-// }
-// }
-
-// Задача 3
-
-// public class program {
-// public static void main(String[] args) {
-// System.out.println("Простые числа в промежутке [-17, 219]: ");
-// for (int i = 2; i <= 100; i++) {
-// if (isPrime(i)) {
-// System.out.print(i + " ");
-// }
-// }
-// }
-
-// public static boolean isPrime(int x) {
-// if (x < 2)
-// return false;
-// int temp;
-// for (int i = 2; i <= x / 2; i++) {
-// temp = x % i;
-// if (temp == 0) {
-// return false;
-// }
-// }
-// return true;
-// }
-// }
+   public static void sLog(String text) throws IOException {
+      Logger logs = Logger.getLogger(program.class.getName());
+      FileHandler fh = new FileHandler("logs.xml", true);
+      logs.addHandler(fh);
+      XMLFormatter xml = new XMLFormatter();
+      fh.setFormatter(xml);
+      logs.log(Level.INFO, (text));
+      fh.close();
+   }
+}
