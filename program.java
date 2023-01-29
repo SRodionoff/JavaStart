@@ -1,34 +1,66 @@
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
-import java.util.logging.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class program {
-   public static void main(String[] args) throws IOException {
-      try {
-         Scanner scn = new Scanner(System.in);
-         System.out.print("Введите число: ");
-         Byte res = scn.nextByte();
-         String resStr = Byte.toString(res);
-         try (FileWriter fw = new FileWriter("result.txt", true)) {
-            fw.write(resStr + "\n");
-            fw.flush();
-            scn.close();
-         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-         }
-      } catch (Exception ex) {
-         sLog(ex.toString());
-      }
+   public static void main(String[] args) {
+      ArrayList<Integer> numbers = new ArrayList<Integer>();
+      ArrayList<Integer> evenNumbers = new ArrayList<Integer>();
+      numbers.add(19);
+      numbers.add(32);
+      numbers.add(11);
+      numbers.add(15);
+      numbers.add(52);
+      numbers.add(68);
+      numbers.add(7);
+      numbers.add(8);
+      numbers.add(9);
+      numbers.add(111);
+      System.out.println("Изначальный массив: " + numbers);
+      System.out.println("Массив без четных чисел: " + removeEvenValue(numbers, evenNumbers));
+      System.out.println("Минимальное число: " + minNum(numbers));
+      System.out.println("Максимальное число: " + maxNum(numbers));
+      System.out.println("Среднее арифметическое равно: " + getAverage(numbers));
    }
 
-   public static void sLog(String text) throws IOException {
-      Logger logs = Logger.getLogger(program.class.getName());
-      FileHandler fh = new FileHandler("logs.xml", true);
-      logs.addHandler(fh);
-      XMLFormatter xml = new XMLFormatter();
-      fh.setFormatter(xml);
-      logs.log(Level.INFO, (text));
-      fh.close();
+   // Нужно удалить из него четные числа
+   public static List<Integer> removeEvenValue(ArrayList<Integer> numbers, ArrayList<Integer> evenNumbers) {
+      for (int i = 0; i < numbers.size(); i++) {
+         if (numbers.get(i) % 2 != 0) {
+            evenNumbers.add(numbers.get(i));
+         }
+      }
+      return new ArrayList<Integer>(evenNumbers);
+   }
+
+   // Найти минимальное значение
+   public static Integer minNum(ArrayList<Integer> numbers) {
+      int min = numbers.get(0);
+      for (int i = 0; i < numbers.size(); i++) {
+         if (numbers.get(i) < min) {
+            min = numbers.get(i);
+         }
+      }
+      return min;
+   }
+
+   // Найти максимальное значение
+   public static Integer maxNum(ArrayList<Integer> numbers) {
+      int max = numbers.get(0);
+      for (int i = 0; i < numbers.size(); i++) {
+         if (numbers.get(i) > max) {
+            max = numbers.get(i);
+         }
+      }
+      return max;
+   }
+
+   // Найти среднее значение
+   public static Double getAverage(ArrayList<Integer> numbers) {
+      double avg = 0;
+      for (int i = 0; i < numbers.size(); i++) {
+         avg += numbers.get(i);
+      }
+      avg /= numbers.size();
+      return avg;
    }
 }
